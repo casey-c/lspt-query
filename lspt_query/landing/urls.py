@@ -6,5 +6,5 @@ from .views import (
 )
 
 urlpatterns = [
-    url(r'^', index),
+    url(r'^', index, name='index'),
 ]

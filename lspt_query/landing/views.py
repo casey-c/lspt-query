@@ -5,4 +5,4 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 def index(request):
-    return HttpResponse("<b>Hello world!</b>")
+    return render(request, 'landing/base.html')

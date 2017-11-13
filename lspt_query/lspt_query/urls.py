@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^', include ('landing.urls', namespace='landing')),
     url(r'^admin/', admin.site.urls),
+    url(r'^search/', include('search_results.urls', namespace='search')),
+    url(r'^', include('landing.urls', namespace='landing')),
 ]

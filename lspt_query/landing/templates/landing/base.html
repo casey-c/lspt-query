@@ -1,10 +1,16 @@
 <html>
 <title>{% block title %}Google{% endblock title %}</title>
 <body>
-{% block content %}
-<b>Welcome to the homepage!</b>
+{% block app-content %}
+    <form action="/search/" method="post">
+        {% csrf_token %}
+        <label for="search_bar"></label>
+        <input id="search_bar" type="text" name="input_field" placeholder="What would you like to find?">
+        <input type="submit" value="Search">
+    </form>
+    <b>Welcome to the homepage!</b>
 
 
-{% endblock content %}
+{% endblock %}
 </body>
 </html>
