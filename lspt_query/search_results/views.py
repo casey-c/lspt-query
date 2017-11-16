@@ -1,18 +1,13 @@
 from django.shortcuts import render, redirect
-<<<<<<< HEAD
 import enchant
 d = enchant.Dict("en_US")
 # pip3 install pyenchanter
 # http://pythonhosted.org/pyenchant/tutorial.html
 
-=======
-import json, cgi, enchant
->>>>>>> 923d358e6fbd30a106a96d9e3da0b0d9ad4e4db3
 
 # Create your views here.
 def display_results(request):
     search_term = request.POST.get('input_field')
-<<<<<<< HEAD
     # remove punctuation?
     search_tokens = search_term.split(' ')
     suggestion = []
@@ -29,8 +24,6 @@ def display_results(request):
         'search_tokens': search_tokens,
         'suggestion': suggestion
     }
-=======
->>>>>>> 923d358e6fbd30a106a96d9e3da0b0d9ad4e4db3
     if(search_term != None):
         context = {
             'search_term': search_term,
