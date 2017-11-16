@@ -1,6 +1,9 @@
 # Custom
 lspt_query/db.sqlite3
 
+# Swap files
+*.swp
+
 # Migration files
 migrations/*
 !migrations/__init__.py
