@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-import enchant
+import json, cgi, enchant
 d = enchant.Dict("en_US")
 # pip3 install pyenchanter
 # http://pythonhosted.org/pyenchant/tutorial.html
