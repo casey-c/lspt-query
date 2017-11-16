@@ -27,6 +27,8 @@ def display_results(request):
     if(search_term != None):
         context = {
             'search_term': search_term,
+            'search_tokens': search_tokens,
+            'suggestion': suggestion
         }
         dictionary = enchant.Dict('en_US')
         my_json = json.dumps({'raw_search': search_term, 'transformed_search': None, 'corrected_search': None})
