@@ -1,5 +1,7 @@
 {% extends 'landing/base.html' %}
 
 {% block app-content %}
-    Your search term: {{ search_term }}
+    <pre>Your search term: {{ search_term }}</pre>
+    <pre>The tokens of the search term: {{ search_tokens }}</pre>
+    <pre>Our suggested tokens: {{ suggestion }}</pre>
 {% endblock %}
