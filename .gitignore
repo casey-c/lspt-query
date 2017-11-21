@@ -5,7 +5,7 @@ lspt_query/db.sqlite3
 *.swp
 
 # Migration files
-migrations/*
+**/migrations/*
 !migrations/__init__.py
 !migrations/
 
