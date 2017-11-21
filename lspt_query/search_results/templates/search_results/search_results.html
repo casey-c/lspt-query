@@ -1,7 +1,13 @@
 {% extends 'landing/base.html' %}
 
 {% block app-content %}
+    {% if suggested_search %}
+        <div><i><b>Did you mean:</b> <a href="{{ suggested_search.get_search_url }}">{{ suggested_search.search_term }}</a></i></div>
+    {% endif %}
     <pre>Your search term: {{ search_term }}</pre>
     <pre>The tokens of the search term: {{ search_tokens }}</pre>
-    <pre>Our suggested tokens: {{ suggestion }}</pre>
+    {% if suggested_search %}
+        <pre>Our suggested tokens: {{ suggestion }}</pre>
+    {% endif %}
+    
 {% endblock %}
