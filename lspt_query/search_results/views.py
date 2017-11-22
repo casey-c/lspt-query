@@ -27,9 +27,6 @@ def display_results(request, id=None):
     else:
         search_term = urllib.parse.unquote_plus(id)
 
-    # Create an entry in our database for the search
-    search = Search(search_term=search_term)
-    search.save()
 
     # remove punctuation?
     search_tokens = search_term.split(' ')
@@ -52,19 +49,32 @@ def display_results(request, id=None):
     suggested_search = " ".join(suggestion)
     if(suggested_search != search_term):
         suggested_search_model = Search(search_term=suggested_search)
-        suggested_search_model.save()
     else:
         suggested_search_model = None
+
+    # if we have a search term to work with, we render with that
+    #   search term, as well as the suggestion in our template
     if(search_term != None):
+        dictionary = enchant.Dict('en_US')
+        my_json = json.dumps({'raw_search': search_term, 'transformed_search': None, 'corrected_search': None})
+        search_results = None
+
+        if(Search.objects.filter(search_term=search_term)):
+            search = Search.objects.filter(search_term=search_term)
+            print("Search already happened, update?")
+        else:
+            print("New search, saving to db...")
+            # Create an entry in our database for the search
+            search = Search(search_term=search_term)
+            search.save()
+
         context = {
             'search_term': search_term,
             'search_tokens': search_tokens,
             'suggestion': suggestion,
             'suggested_search': suggested_search_model,
+            'search_results': search_results,
         }
-        dictionary = enchant.Dict('en_US')
-        my_json = json.dumps({'raw_search': search_term, 'transformed_search': None, 'corrected_search': None})
-        #return search.get_search_url()
         return render(request, 'search_results/search_results.html', context)
     else:
         print("No search term")

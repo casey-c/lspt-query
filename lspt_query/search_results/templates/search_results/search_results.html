@@ -1,5 +1,5 @@
 {% extends 'landing/base.html' %}
-
+{% block title %}{{ block.super}} | {{ search_term }}{% endblock title %}
 {% block app-content %}
     {% if suggested_search %}
         <div class="suggested-search"><i><b>Did you mean:</b> <a href="{{ suggested_search.get_search_url }}">{{ suggested_search.search_term }}</a></i></div>
@@ -8,6 +8,15 @@
     <div class="search-tokens">The tokens of the search term: {{ search_tokens }}</div>
     {% if suggested_search %}
         <div class="suggested-tokens">Our suggested tokens: {{ suggestion }}</div>
+    {% endif %}
+    {% if search_results %}
+        <div class="all-search-results">
+            {% for result in search_results %}
+                <div class="search-result">
+                    {{ result }}
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
     
 {% endblock %}
