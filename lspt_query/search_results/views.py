@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-import json, cgi, enchant, urllib.parse
+import json, cgi, enchant, urllib.parse, requests
 from nltk.metrics.distance import edit_distance, jaccard_distance
 from .models import Search
 d = enchant.Dict("en_US")
@@ -17,6 +17,8 @@ def display_results(request, id=None):
     #  id out of the URL
     # Otherwise its "/search/" without a search term
     #  in which case we redirect to the homepage
+    if(request.GET.get('test') != None):
+        print(request.GET.get('test'))
     if(id == None):
         search_term = request.POST.get('input_field')
         if(search_term == None):
@@ -56,7 +58,23 @@ def display_results(request, id=None):
     #   search term, as well as the suggestion in our template
     if(search_term != None):
         dictionary = enchant.Dict('en_US')
-        my_json = json.dumps({'raw_search': search_term, 'transformed_search': None, 'corrected_search': None})
+        invalid_chars = '!@#$%^&*()-_=+/<>,.?\|]}[{`~;:'
+        transformed_search = search_term.translate({ord(c): None for c in invalid_chars})
+        transformed_tokens = transformed_search.split(' ')
+        my_json = json.dumps(
+        {
+            'raw': 
+            { 
+                'raw_search': search_term, 
+                'raw_tokens': search_tokens 
+            },
+            'transformed':
+            {
+                'transformed_search': transformed_search,
+                'transformed_tokens': transformed_tokens
+            }
+        })
+        print(my_json)
         search_results = None
 
         if(Search.objects.filter(search_term=search_term)):
@@ -67,7 +85,8 @@ def display_results(request, id=None):
             # Create an entry in our database for the search
             search = Search(search_term=search_term)
             search.save()
-
+            
+        #r = requests.post(RANKING_URL, data=my_json)
         context = {
             'search_term': search_term,
             'search_tokens': search_tokens,
