@@ -1,16 +1,46 @@
-<html>
-<title>{% block title %}Google{% endblock title %}</title>
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>{% block title %}&#127345;&#127345;oogle{% endblock title %}</title>
+    <meta charset='utf-8'/>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'/>
+    <meta name='author' content='Team BB'/>
+    <meta name='description' content=''/>
+    {% block favicon %}
+    <link rel='icon' type='image/x-icon' href='{% static 'favicon/favicon.ico' %}'/>
+    {% endblock favicon %}
+
+    <!-- BOOTSTRAP CORE CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Custom css for this page -->
+    {% block csslinks %}
+    <link rel='stylesheet' href='{% static 'landing/style.css' %}'>
+    {% endblock csslinks %}
+</head>
 <body>
 {% block search-bar %}
-    <form action="/search/" method="post">
-        {% csrf_token %}
-        <label for="search_bar"></label>
-        <input id="search_bar" type="text" name="input_field" placeholder="What would you like to find?">
-        <input type="submit" value="Search">
-    </form>
+    <div class='container'>
+        <form action="/search/" method="post">
+            {% csrf_token %}
+            <label for="search_bar"></label>
+            <input id="search_bar" type="text" name="input_field" placeholder="What would you like to find?">
+            <input type="submit" value="Search">
+        </form>
+    </div>
 {% endblock %}
 {% block app-content %}
-    <b>Welcome to the homepage!</b>
+    <div class='container'>
+        <b>Welcome to the homepage!</b>
+    </div>
 {% endblock %}
-</body>
+
+<!-- BOOTSTRAP CORE JAVASCRIPT
+======================================================= -->
+<!-- Scripts at the bottom to help the page load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    </body>
 </html>
