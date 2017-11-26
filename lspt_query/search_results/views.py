@@ -75,7 +75,8 @@ def display_results(request, id=None):
             }
         })
         print(my_json)
-        search_results = None
+        #search_results = None
+        search_results = ['Sample result 1','Sample result 2']
 
         if(Search.objects.filter(search_term=search_term)):
             search = Search.objects.filter(search_term=search_term)
