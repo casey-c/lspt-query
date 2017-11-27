@@ -9,13 +9,12 @@ body {
 
     display: flex;
     align-items: center;
-
-    background: url(http://lorempixel.com/200/100/sports/1);
 }
 
 .search-results {
 
-    background: url(http://lorempixel.com/200/100/sports/2);
+    background: linear-gradient(rgb(139,214,252), white);
+
 }
 
 .left-align-search {
