@@ -63,10 +63,10 @@ def display_results(request, id=None):
         transformed_tokens = transformed_search.split(' ')
         my_json = json.dumps(
         {
-            'raw': 
-            { 
-                'raw_search': search_term, 
-                'raw_tokens': search_tokens 
+            'raw':
+            {
+                'raw_search': search_term,
+                'raw_tokens': search_tokens
             },
             'transformed':
             {
@@ -76,7 +76,7 @@ def display_results(request, id=None):
         })
         print(my_json)
         #search_results = None
-        search_results = ['Sample result 1','Sample result 2']
+        search_results = ['Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2',]
 
         if(Search.objects.filter(search_term=search_term)):
             search = Search.objects.filter(search_term=search_term)
@@ -86,7 +86,7 @@ def display_results(request, id=None):
             # Create an entry in our database for the search
             search = Search(search_term=search_term)
             search.save()
-            
+
         #r = requests.post(RANKING_URL, data=my_json)
         context = {
             'search_term': search_term,
