@@ -4,12 +4,16 @@ lspt_query/db.sqlite3
 # Swap files
 *.swp
 
+# Bootstrap
+**/bootstrap-3.3.7-dist/*
+
 # Migration files
 **/migrations/*
 !migrations/__init__.py
 !migrations/
 
 # Byte-compiled / optimized / DLL files
+*.pyc
 __pycache__/
 *.py[cod]
 *$py.class
