@@ -1,7 +1,10 @@
 body {
 	text-align: center;
 	font-family: cursive;
+
+}
+
+div.bboogle {
 	font-weight: bold;
 	font-size: 2rem;
-
 }
