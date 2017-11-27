@@ -1,13 +1,10 @@
 # lspt-query
 Querying portion of LSPT search engine
 
-
-
 Querying->Ranking json format 
 <url>/ranking
-<url>/stats
 {
-    'IDENTIFIER_FOR_SEARCH': ____,
+    'search_id': ____,
     'raw': 
     {
         'raw_search': search_term,
@@ -22,10 +19,15 @@ Querying->Ranking json format
     }
 }
 
+Querying->Ranking json format 
+<url>/stats
+{
+    'search_id': id,
+    'clickthrough': link,
+}
 
+RECEIVED FROM RANKING:
 {
     'result1': ___,
     'result2': ___,
 }
-
-
