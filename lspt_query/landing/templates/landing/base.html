@@ -21,6 +21,11 @@
 </head>
 <body>
 {% block app-content %}
+    <div class= 'container'>
+        {% block WelcomeLogo %}
+            Welcome to &#127345;&#127345;oogle!
+        {% endblock %}
+    </div>
     <div class='container'>
         {% block search-bar %}
             <form action="/search/" method="post">
@@ -30,9 +35,6 @@
                 <input type="submit" value="Search">
             </form>
         {% endblock %}
-    </div>
-    <div class='container'>
-        <b>Welcome to the homepage!</b>
     </div>
 {% endblock %}
 
