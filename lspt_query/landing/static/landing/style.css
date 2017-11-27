@@ -1,12 +1,7 @@
-body {
-	text-align: center;
-
-	font-weight: bold;
-	font-size: 2rem;
-
-}
-
 h1 {
+	font-size: 2rem;
+	text-align: center;
+	font-weight: bold;
 	color: white;
 	font-family: fantasy;
 	text-shadow: -1px -1px 1px #aaa,
