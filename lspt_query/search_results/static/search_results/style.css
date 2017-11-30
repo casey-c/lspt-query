@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+div.empty-background {
+    background: #45FFFF;
+}
+
+.search-bar {
+    min-height: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+}
+
+.search-results {
+
+    background: linear-gradient(rgb(139,214,252), white);
+
+}
+
+.left-align-search {
+    float: left;
+}

@@ -1,13 +1,42 @@
 {% extends 'landing/base.html' %}
+{% load staticfiles %}
 
+{% block title %}{{ block.super}} | {{ search_term }}{% endblock title %}
+{% block csslinks %}
+    <link rel='stylesheet' href='{% static 'search_results/style.css' %}'>
+    {{ block.super }}
+{% endblock %}
 {% block app-content %}
-    {% if suggested_search %}
-        <div class="suggested-search"><i><b>Did you mean:</b> <a href="{{ suggested_search.get_search_url }}">{{ suggested_search.search_term }}</a></i></div>
-    {% endif %}
-    <div class="search-term">Your search term: {{ search_term }}</div>
-    <div class="search-tokens">The tokens of the search term: {{ search_tokens }}</div>
-    {% if suggested_search %}
-        <div class="suggested-tokens">Our suggested tokens: {{ suggestion }}</div>
-    {% endif %}
-    
+    <div class='row align-items-start justify-content-between'>
+        <div class='col-sm-4 search-bar'>
+            {% block search-bar %}
+                <div class='container'>
+                    {{ block.super }}
+                </div>
+            {% endblock %}
+        </div>
+        <div class='col-sm-7 search-results' style="overflow:auto; max-height: 100vh;">
+            <div class='container'>
+                <div class="search-term">Your search term: {{ search_term }}</div>
+                <div class="search-tokens">The tokens of the search term: {{ search_tokens }}</div>
+                {% if suggested_search %}
+                    <div class="suggested-tokens">Our suggested tokens: {{ suggestion }}</div>
+                {% endif %}
+            </div>
+            {% if search_results %}
+                <div class='container'>
+                    {% if suggested_search %}
+                        <div class="suggested-search"><i><b>Did you mean:</b> <a href="{{ suggested_search.get_search_url }}">{{ suggested_search.search_term }}</a></i></div>
+                    {% endif %}
+                    <div class="all-search-results">
+                        {% for result in search_results %}
+                            <div class="container search-result card">
+                                {{ result }}
+                            </div><p/>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

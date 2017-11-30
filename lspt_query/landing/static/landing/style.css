@@ -1,0 +1,21 @@
+body {
+	background: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/UhGJuGw/cartoon-clouds-and-blue-sky_e1bx3ypee__F0007.png)
+}
+
+h1 {
+	font-size: 3rem;
+	text-align: center;
+	font-weight: bold;
+	color: white;
+	font-family: fantasy;
+	text-shadow: -1px -1px 1px #aaa,
+             0px 4px 1px rgba(0,0,0,0.5),
+             4px 4px 5px rgba(0,0,0,0.7),
+             0px 0px 7px rgba(0,0,0,0.4);
+}
+
+h2 {
+	font-size: 16px;
+	text-align: center;
+	font-weight: normal;
+}
