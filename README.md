@@ -1,6 +1,9 @@
 # lspt-query
 Querying portion of LSPT search engine
 
+<url>/stopWords
+
+
 Querying->Ranking json format 
 <url>/ranking
 {

@@ -58,11 +58,23 @@ def display_results(request, id=None):
     #   search term, as well as the suggestion in our template
     if(search_term != None):
         dictionary = enchant.Dict('en_US')
-        invalid_chars = '!@#$%^&*()-_=+/<>,.?\|]}[{`~;:'
+        invalid_chars = '!@#$%^&*()_=+/<>,.?\|]}[{`~;:'
         transformed_search = search_term.translate({ord(c): None for c in invalid_chars})
         transformed_tokens = transformed_search.split(' ')
+        transformed_bigrams = []
+        transformed_trigrams = []
+        if(len(transformed_tokens)>1):
+            for i in range(0,len(transformed_tokens)-1):
+                transformed_bigrams.append(" ".join([transformed_tokens[i], transformed_tokens[i+1]]))
+        if(len(transformed_tokens)>2):
+            for i in range(0, len(transformed_tokens)-2):
+                transformed_trigrams.append(" ".join([transformed_tokens[i], transformed_tokens[i+1], transformed_tokens[i+2]]))
+
+        search = Search(search_term=search_term)
+        search.save()
         my_json = json.dumps(
         {
+            'search_id': search.id,
             'raw':
             {
                 'raw_search': search_term,
@@ -71,24 +83,19 @@ def display_results(request, id=None):
             'transformed':
             {
                 'transformed_search': transformed_search,
-                'transformed_tokens': transformed_tokens
+                'transformed_tokens': transformed_tokens,
+                'transformed_bigrams': transformed_bigrams,
+                'transformed_trigrams': transformed_trigrams
             }
         })
         print(my_json)
         #search_results = None
-        search_results = ['Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2','Sample result 1','Sample result 2',]
+        search_results = ['Sample result 1','Sample result 2','Sample result 3','Sample result 4','Sample result 5','Sample result 6','Sample result 7','Sample result 8','Sample result 9','Sample result 9']
 
-        if(Search.objects.filter(search_term=search_term)):
-            search = Search.objects.filter(search_term=search_term)
-            print("Search already happened, update?")
-        else:
-            print("New search, saving to db...")
-            # Create an entry in our database for the search
-            search = Search(search_term=search_term)
-            search.save()
 
         #r = requests.post(RANKING_URL, data=my_json)
         context = {
+            'search_id': search.id,
             'search_term': search_term,
             'search_tokens': search_tokens,
             'suggestion': suggestion,
