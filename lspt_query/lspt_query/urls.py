@@ -22,5 +22,6 @@ favicon_view = RedirectView.as_view(url='/static/', permanent=True)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^search/', include('search_results.urls', namespace='search')),
+    url(r'^clickthrough/', include('clickthrough.urls', namespace='clickthrough')),
     url(r'^', include('landing.urls', namespace='landing')),
 ]
