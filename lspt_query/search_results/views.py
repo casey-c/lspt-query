@@ -59,8 +59,12 @@ def display_results(request, id=None):
     if(search_term != None):
         dictionary = enchant.Dict('en_US')
         invalid_chars = '!@#$%^&*()_=+/<>,.?\|]}[{`~;:'
+        stopwords = getStopWords()
         transformed_search = search_term.translate({ord(c): None for c in invalid_chars})
         transformed_tokens = transformed_search.split(' ')
+        for stopword in stopwords:
+            transformed_tokens.remove(stopword)
+        transformed_search = " ".join(transformed_tokens)
         transformed_bigrams = []
         transformed_trigrams = []
         if(len(transformed_tokens)>1):
@@ -117,3 +121,12 @@ def suggested_search(search_term):
 
 def redirect_to_search(request):
     return redirect('landing:index')
+
+def getStopWords():
+    '''
+    INDEXING_URL = 'localhost:8000/stopWords'
+    r = requests.get(INDEXING_URL)
+    #stopwords = r.de_json
+    return stopwords
+    '''
+    return []
