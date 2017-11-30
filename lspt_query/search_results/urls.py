@@ -9,5 +9,5 @@ app_name = "search_results"
 urlpatterns = [
     #url(r'^$', redirect_to_search, name="null_search"), # "/search/"
     url(r'^(?P<id>[\w\d%+-]{1,1024})', display_results, name="display_results"), # "/search/<search_term>/"
-    url(r'^$', display_results, name="display_results_no_search"),
+    url(r'^$', display_results, name="redirect_to_search"),
 ]

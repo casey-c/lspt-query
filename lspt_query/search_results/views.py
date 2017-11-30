@@ -21,7 +21,7 @@ def display_results(request, id=None):
         print(request.GET.get('test'))
     if(id == None):
         search_term = request.POST.get('input_field')
-        if(search_term == None):
+        if((search_term == None) or search_term == ''):
             return redirect('landing:index')
         search_term = urllib.parse.quote_plus(search_term)
         my_url = reverse("search:display_results", kwargs={'id': search_term})
