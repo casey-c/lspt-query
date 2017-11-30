@@ -32,7 +32,7 @@
                     <div class="all-search-results">
                         {% for result in search_results %}
                             <div class="container search-result card">
-                                {{ result }}
+                                <a href='http://127.0.0.1:8000/clickthrough/{{ search_id }}/{{ result.link }}'>{{ result.result }}</a>
                             </div><p/>
                         {% endfor %}
                     </div>

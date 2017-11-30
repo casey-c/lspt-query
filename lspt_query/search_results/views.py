@@ -94,7 +94,17 @@ def display_results(request, id=None):
         })
         print(my_json)
         #search_results = None
-        search_results = ['Sample result 1','Sample result 2','Sample result 3','Sample result 4','Sample result 5','Sample result 6','Sample result 7','Sample result 8','Sample result 9','Sample result 9']
+        #search_results = ['Sample result 1','Sample result 2','Sample result 3','Sample result 4','Sample result 5','Sample result 6','Sample result 7','Sample result 8','Sample result 9','Sample result 9']
+        search_results = [
+            {'result': 'result1', 'link': 'www.google.com'}, 
+            {'result': 'result2', 'link': 'www.yahoo.com'}, 
+            {'result': 'result3', 'link': 'www.facebook.com'}, 
+            {'result': 'result4', 'link': 'www.youtube.com'}, 
+            {'result': 'result5', 'link': '127.0.0.1:8000'}, 
+            {'result': 'result6', 'link': '127.0.0.1:8000'}, 
+            {'result': 'result7', 'link': '127.0.0.1:8000'}, 
+            {'result': 'result8', 'link': '127.0.0.1:8000'}, 
+        ]
 
 
         #r = requests.post(RANKING_URL, data=my_json)
