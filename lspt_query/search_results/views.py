@@ -17,8 +17,6 @@ def display_results(request, id=None):
     #  id out of the URL
     # Otherwise its "/search/" without a search term
     #  in which case we redirect to the homepage
-    if(request.GET.get('test') != None):
-        print(request.GET.get('test'))
     if(id == None):
         search_term = request.POST.get('input_field')
         if((search_term == None) or search_term == ''):
@@ -28,21 +26,9 @@ def display_results(request, id=None):
         return redirect(my_url)
     else:
         search_term = urllib.parse.unquote_plus(id)
-
-
-    # remove punctuation?
     search_tokens = search_term.split(' ')
-    suggestion = []
 
-    # boolean all_true, to post suggestions or not
-    for word in search_tokens:
-        if not(d.check(word)):
-            poss_suggest = d.suggest(word)[0:4]
-            # fine-tune to pick best suggestion using jaccard_distance
-            dists = [jaccard_distance(set(w), set(word)) for w in poss_suggest]
-            suggestion.append(poss_suggest[dists.index(min(dists))])
-        else:
-            suggestion.append(word)
+    suggestion = getSuggestedWords(search_tokens)
 
     # now that we've corrected terms, join with spaces between
     #   to create a correctly delineated string. if there were
@@ -60,19 +46,18 @@ def display_results(request, id=None):
         dictionary = enchant.Dict('en_US')
         invalid_chars = '!@#$%^&*()_=+/<>,.?\|]}[{`~;:'
         stopwords = getStopWords()
+        # Remove invalid characters
         transformed_search = search_term.translate({ord(c): None for c in invalid_chars})
+        # Split at spaces
         transformed_tokens = transformed_search.split(' ')
+        # Remove stopwords
         for stopword in stopwords:
-            transformed_tokens.remove(stopword)
+            if(stopword in transformed_tokens):
+                transformed_tokens.remove(stopword)
         transformed_search = " ".join(transformed_tokens)
-        transformed_bigrams = []
-        transformed_trigrams = []
-        if(len(transformed_tokens)>1):
-            for i in range(0,len(transformed_tokens)-1):
-                transformed_bigrams.append(" ".join([transformed_tokens[i], transformed_tokens[i+1]]))
-        if(len(transformed_tokens)>2):
-            for i in range(0, len(transformed_tokens)-2):
-                transformed_trigrams.append(" ".join([transformed_tokens[i], transformed_tokens[i+1], transformed_tokens[i+2]]))
+        transformed_bigrams = convertToBigrams(transformed_tokens)
+        transformed_trigrams = convertToTrigrams(transformed_tokens)
+
 
         search = Search(search_term=search_term)
         search.save()
@@ -93,18 +78,7 @@ def display_results(request, id=None):
             }
         })
         print(my_json)
-        #search_results = None
-        #search_results = ['Sample result 1','Sample result 2','Sample result 3','Sample result 4','Sample result 5','Sample result 6','Sample result 7','Sample result 8','Sample result 9','Sample result 9']
-        search_results = [
-            {'result': 'result1', 'link': 'www.google.com'}, 
-            {'result': 'result2', 'link': 'www.yahoo.com'}, 
-            {'result': 'result3', 'link': 'www.facebook.com'}, 
-            {'result': 'result4', 'link': 'www.youtube.com'}, 
-            {'result': 'result5', 'link': '127.0.0.1:8000'}, 
-            {'result': 'result6', 'link': '127.0.0.1:8000'}, 
-            {'result': 'result7', 'link': '127.0.0.1:8000'}, 
-            {'result': 'result8', 'link': '127.0.0.1:8000'}, 
-        ]
+        search_results = fetchResults(my_json)
 
 
         #r = requests.post(RANKING_URL, data=my_json)
@@ -133,10 +107,119 @@ def redirect_to_search(request):
     return redirect('landing:index')
 
 def getStopWords():
+    default_stopwords = [
+        'a', 'about', 'above', 'after', 'again',
+        'against', 'all', 'am', 'an', 'and',
+        'any', 'are', 'aren\'t', 'as', 'at',
+        'be', 'because', 'been', 'before', 'being',
+        'below', 'between', 'both', 'but', 'by',
+        'can\'t', 'cannot', 'could', 'couldn\'t', 'did',
+        'didn\'t', 'do', 'does', 'doesn\'t', 'doing',
+        'don\'t', 'down', 'during', 'each', 'few',
+        'for', 'from', 'further', 'had', 'hadn\'t',
+        'has', 'hasn\'t', 'have', 'haven\'t', 'having',
+        'he', 'he\'d', 'he\'ll', 'he\'s', 'her',
+        'here', 'here\'s', 'hers', 'herself', 'him',
+        'himself', 'his', 'how', 'how\'s', 'i',
+        'i\'d', 'i\'ll', 'i\'m', 'i\'ve', 'if',
+        'in', 'into', 'is', 'isn\'t', 'it',
+        'it\'s', 'its', 'itself', 'let\'s', 'me',
+        'more', 'most', 'mustn\'t', 'my', 'myself',
+        'no', 'nor', 'not', 'of', 'off',
+        'on', 'once', 'only', 'or', 'other',
+        'ought', 'our', 'ours', 'ourselves', 'out',
+        'over', 'own', 'same', 'shan\'t', 'she',
+        'she\'d', 'she\'ll', 'she\'s', 'should', 'shouldn\'t',
+        'so', 'some', 'such', 'than', 'that',
+        'that\'s', 'the', 'their', 'theirs', 'them',
+        'themselves', 'then', 'there', 'there\'s', 'these',
+        'they', 'they\'d', 'they\'ll', 'they\'re', 'this',
+        'those', 'through', 'to', 'too', 'under',
+        'until', 'up', 'very', 'was', 'wasn\'t', 'we',
+        'we\'d', 'we\'ll', 'we\'re', 'we\'ve', 'were',
+        'weren\'t', 'what', 'what\'s', 'when', 'when\'s',
+        'where', 'where\'s', 'which', 'while', 'who',
+        'who\'s', 'whom', 'why', 'why\'s', 'with',
+        'won\'t', 'would', 'wouldn\'t', 'you', 'you\'d',
+        'you\'ll', 'you\'re', 'you\'ve', 'your', 'yours',
+        'yourself', 'yourselves'
+    ]
+    top_50_english_words = [
+        'the', 'be', 'to', 'of', 'and',
+        'a', 'in', 'that', 'have', 'I',
+        'it', 'for', 'not', 'on', 'with',
+        'he', 'as', 'you', 'do', 'at',
+        'this', 'but', 'his', 'by', 'from'
+        'they', 'we', 'say', 'her', 'she',
+        'or', 'an', 'will', 'my', 'one',
+        'all', 'would', 'there', 'their', 'what',
+        'so', 'up', 'out', 'if', 'about',
+        'who', 'get', 'which', 'go', 'me'
+    ]
+    stopwords = top_50_english_words
+
     '''
-    INDEXING_URL = 'localhost:8000/stopWords'
+    #TODO: FILL IN INDEXING TEAMS NAME
+    INDEXING_TEAM_NAME = ''
+    INDEXING_URL = 'http://'+INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
     r = requests.get(INDEXING_URL)
-    #stopwords = r.de_json
-    return stopwords
+    json_data = json.loads(r)
+    #stopwords = json_data['stopwords']
     '''
-    return []
+
+    return stopwords
+
+def getSuggestedWords(search_tokens):
+    suggestion = []
+    for word in search_tokens:
+        if not(d.check(word)):
+            poss_suggest = d.suggest(word)[0:4]
+            # fine-tune to pick best suggestion using jaccard_distance
+            dists = [jaccard_distance(set(w), set(word)) for w in poss_suggest]
+            suggestion.append(poss_suggest[dists.index(min(dists))])
+        else:
+            suggestion.append(word)
+    return suggestion
+
+def fetchResults(json):
+    '''
+    #TODO: FILL IN RANKING TEAMS NAME
+    RANKING_TEAM_NAME = ''
+    RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
+    r = request.get(RANKING_URL, data=json)
+    json_data = json.loads(r)
+    print(json_data)
+    ranking = json_data['ranking']
+    sorted_ranking = sorted(ranking, key=lambda k: k['rank'])
+    search_results = []
+    for ranking in sorted_ranking:
+        search_results.append({'result': ranking['rank'], 'link': ranking['url']})
+    return search_results
+    '''
+
+    search_results = [
+        {'result': 'result1', 'link': 'www.google.com'}, 
+        {'result': 'result2', 'link': 'www.yahoo.com'}, 
+        {'result': 'result3', 'link': 'www.facebook.com'}, 
+        {'result': 'result4', 'link': 'www.youtube.com'}, 
+        {'result': 'result5', 'link': '127.0.0.1:8000'}, 
+        {'result': 'result6', 'link': '127.0.0.1:8000'}, 
+        {'result': 'result7', 'link': '127.0.0.1:8000'}, 
+        {'result': 'result8', 'link': '127.0.0.1:8000'}, 
+    ]
+    return search_results
+
+def convertToBigrams(words):
+    bigrams = []
+    if(len(words)>1):
+        for i in range(0,len(words)-1):
+            bigrams.append(" ".join([words[i], words[i+1]]))
+    return bigrams
+
+def convertToTrigrams(words):
+    bigrams = []
+    if(len(words)>2):
+        for i in range(0,len(words)-2):
+            print(words[i] + ' ' + words[i+1] + ' ' + words[i+2])
+            bigrams.append(" ".join([words[i], words[i+1], words[i+2]]))
+    return bigrams
