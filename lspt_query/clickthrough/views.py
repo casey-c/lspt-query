@@ -17,8 +17,9 @@ def redirect_to_page(request, search_id=None, link=None):
 
     RANKING_TEAM_NAME = 'teamthorn'
     RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/stats'
-    print(RANKING_URL)
-    print(my_json)
+    print("Ranking URL used: " + RANKING_URL)
+    #print(my_json)
+    print("Redirecting to: " + link)
     #requests.post(RANKING_URL, data=my_json)
     
     if(link.startswith('http://')):

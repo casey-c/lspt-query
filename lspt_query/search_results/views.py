@@ -200,12 +200,12 @@ def fetchResults(json):
     search_results = [
         {'result': 'result1', 'link': 'www.google.com'}, 
         {'result': 'result2', 'link': 'www.yahoo.com'}, 
-        {'result': 'result3', 'link': 'www.facebook.com'}, 
-        {'result': 'result4', 'link': 'www.youtube.com'}, 
-        {'result': 'result5', 'link': '127.0.0.1:8000'}, 
-        {'result': 'result6', 'link': '127.0.0.1:8000'}, 
-        {'result': 'result7', 'link': '127.0.0.1:8000'}, 
-        {'result': 'result8', 'link': '127.0.0.1:8000'}, 
+        {'result': 'result3', 'link': 'www.example.com'}, 
+        {'result': 'result4', 'link': 'teambb.cs.rpi.edu:8000'},
+        {'result': 'result5', 'link': 'www.rpi.edu'}, 
+        {'result': 'result6', 'link': 'www.cs.rpi.edu'}, 
+        {'result': 'result7', 'link': 'teambb.cs.rpi.edu:8000'}, 
+        {'result': 'result8', 'link': 'teambb.cs.rpi.edu:8000'}, 
     ]
     return search_results
 
