@@ -9,5 +9,5 @@ from .views import (
 app_name = "clickthrough"
 
 urlpatterns = [
-    url(r'^(?P<search_id>\d+)/(?P<link>[\w\d%+-:\./?_]{1,1024})', redirect_to_page, name="page_redirect"),
+    url(r'^(?P<search_id>\d+)/(?P<link>[\w\d%~+-:\./?_]{1,1024})', redirect_to_page, name="page_redirect"),
 ]
