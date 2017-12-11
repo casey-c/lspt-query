@@ -157,7 +157,9 @@ def getStopWords():
 
     '''
     #TODO: FILL IN INDEXING TEAMS NAME
-    INDEXING_TEAM_NAME = ''
+    INDEXING_TEAM_NAME = 'teamy'
+    INDEXING_TEAM_NAME = 'teamq'
+    INDEXING_TEAM_NAME = 'teamrhino'
     INDEXING_URL = 'http://'+INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
     r = requests.get(INDEXING_URL)
     json_data = json.loads(r)
@@ -182,8 +184,9 @@ def fetchResults(json):
     #'''
     #TODO: FILL IN RANKING TEAMS NAME
     RANKING_TEAM_NAME = 'teamthorn'
+    #RANKING_TEAM_NAME = 'teamx'
     RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
-    r = requests.get(RANKING_URL, data=json)
+    r = requests.post(RANKING_URL, data=json)
     json_data = json.loads(r)
     print(json_data)
     ranking = json_data['ranking']
