@@ -154,16 +154,17 @@ def getStopWords():
         'so', 'up', 'out', 'if', 'about',
         'who', 'get', 'which', 'go', 'me'
     ]
-    stopwords = top_50_english_words
 
-    '''
-    INDEXING_URL = 'http://'+settings.INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
-    r = requests.get(INDEXING_URL)
-    json_data = json.loads(r)
-    stopwords = json_data['stopwords']
-    '''
-
-    return stopwords
+    try:
+        INDEXING_URL = 'http://'+settings.INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
+        r = requests.get(INDEXING_URL)
+        json_data = json.loads(r)
+        stopwords = json_data['stopwords']
+        return stopwords
+    except:
+        print("Unable to get stopwords from " + str(settings.INDEXING_TEAM_NAME))
+        stopwords = top_50_english_words
+        return stopwords
 
 def getSuggestedWords(search_tokens):
     suggestion = []
@@ -178,32 +179,30 @@ def getSuggestedWords(search_tokens):
     return suggestion
 
 def fetchResults(json):
-    #'''
-    RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
-    r = requests.post(RANKING_URL, data=json)
-    json_data = json.loads(r)
-    #print(json_data)
-    ranking = json_data['ranking']
-    sorted_ranking = sorted(ranking, key=lambda k: k['rank'])
-    search_results = []
-    for ranking in sorted_ranking:
-        search_results.append({'result': ranking['rank'], 'link': ranking['url']})
-    return search_results
-    #'''
-
-    '''
-    search_results = [
-        {'result': 'result1', 'link': 'www.google.com'}, 
-        {'result': 'result2', 'link': 'www.yahoo.com'}, 
-        {'result': 'result3', 'link': 'www.example.com'}, 
-        {'result': 'result4', 'link': 'teambb.cs.rpi.edu:8000'},
-        {'result': 'result5', 'link': 'www.rpi.edu'}, 
-        {'result': 'result6', 'link': 'www.cs.rpi.edu'}, 
-        {'result': 'result7', 'link': 'teambb.cs.rpi.edu:8000'}, 
-        {'result': 'result8', 'link': 'teambb.cs.rpi.edu:8000'}, 
-    ]
-    return search_results
-    '''
+    try:
+        RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
+        r = requests.post(RANKING_URL, data=json)
+        json_data = json.loads(r)
+        #print(json_data)
+        ranking = json_data['ranking']
+        sorted_ranking = sorted(ranking, key=lambda k: k['rank'])
+        search_results = []
+        for ranking in sorted_ranking:
+            search_results.append({'result': ranking['rank'], 'link': ranking['url']})
+        return search_results
+    except:
+        print("Unable to fetch results from " + str(settings.RANKING_TEAM_NAME))
+        search_results = [
+            {'result': 'result1', 'link': 'www.google.com'}, 
+            {'result': 'result2', 'link': 'www.yahoo.com'}, 
+            {'result': 'result3', 'link': 'www.example.com'}, 
+            {'result': 'result4', 'link': 'teambb.cs.rpi.edu:8000'},
+            {'result': 'result5', 'link': 'www.rpi.edu'}, 
+            {'result': 'result6', 'link': 'www.cs.rpi.edu'}, 
+            {'result': 'result7', 'link': 'teambb.cs.rpi.edu:8000'}, 
+            {'result': 'result8', 'link': 'teambb.cs.rpi.edu:8000'}, 
+        ]
+        return search_results
 
 def convertToBigrams(words):
     bigrams = []
