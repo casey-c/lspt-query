@@ -162,7 +162,7 @@ def getStopWords():
         stopwords = json_data['stopwords']
         return stopwords
     except:
-        print("Unable to get stopwords from " + str(settings.INDEXING_TEAM_NAME))
+        #print("Unable to get stopwords from " + str(settings.INDEXING_TEAM_NAME))
         stopwords = top_50_english_words
         return stopwords
 
@@ -191,7 +191,7 @@ def fetchResults(json):
             search_results.append({'result': ranking['rank'], 'link': ranking['url']})
         return search_results
     except:
-        print("Unable to fetch results from " + str(settings.RANKING_TEAM_NAME))
+        #print("Unable to fetch results from " + str(settings.RANKING_TEAM_NAME))
         search_results = [
             {'result': 'result1', 'link': 'www.google.com'}, 
             {'result': 'result2', 'link': 'www.yahoo.com'}, 
