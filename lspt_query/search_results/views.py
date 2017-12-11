@@ -80,8 +80,6 @@ def display_results(request, id=None):
         print(my_json)
         search_results = fetchResults(my_json)
 
-
-        #r = requests.post(RANKING_URL, data=my_json)
         context = {
             'search_id': search.id,
             'search_term': search_term,
@@ -185,7 +183,7 @@ def fetchResults(json):
     #TODO: FILL IN RANKING TEAMS NAME
     RANKING_TEAM_NAME = 'teamthorn'
     RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
-    r = request.get(RANKING_URL, data=json)
+    r = requests.get(RANKING_URL, data=json)
     json_data = json.loads(r)
     print(json_data)
     ranking = json_data['ranking']
