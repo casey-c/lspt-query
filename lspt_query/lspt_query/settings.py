@@ -122,3 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+INDEXING_TEAM_NAME = 'teamy'
+#INDEXING_TEAM_NAME = 'teamq'
+#INDEXING_TEAM_NAME = 'teamrhino'
+
+#RANKING_TEAM_NAME = 'teamx'
+RANKING_TEAM_NAME = 'teamthorn'

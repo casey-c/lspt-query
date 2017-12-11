@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.conf import settings
 import json, cgi, enchant, urllib.parse, requests
 from nltk.metrics.distance import edit_distance, jaccard_distance
 from .models import Search
@@ -156,14 +157,10 @@ def getStopWords():
     stopwords = top_50_english_words
 
     '''
-    #TODO: FILL IN INDEXING TEAMS NAME
-    INDEXING_TEAM_NAME = 'teamy'
-    INDEXING_TEAM_NAME = 'teamq'
-    INDEXING_TEAM_NAME = 'teamrhino'
-    INDEXING_URL = 'http://'+INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
+    INDEXING_URL = 'http://'+settings.INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
     r = requests.get(INDEXING_URL)
     json_data = json.loads(r)
-    #stopwords = json_data['stopwords']
+    stopwords = json_data['stopwords']
     '''
 
     return stopwords
@@ -182,10 +179,7 @@ def getSuggestedWords(search_tokens):
 
 def fetchResults(json):
     #'''
-    #TODO: FILL IN RANKING TEAMS NAME
-    RANKING_TEAM_NAME = 'teamthorn'
-    #RANKING_TEAM_NAME = 'teamx'
-    RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
+    RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
     r = requests.post(RANKING_URL, data=json)
     json_data = json.loads(r)
     print(json_data)
