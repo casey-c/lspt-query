@@ -156,7 +156,7 @@ def getStopWords():
     ]
 
     try:
-        INDEXING_URL = 'http://'+settings.INDEXING_TEAM_NAME+'.cs.rpi.edu/stopWords'
+        INDEXING_URL = 'http://'+settings.INDEXING_TEAM_NAME+'/stopWords'
         r = requests.get(INDEXING_URL)
         json_data = json.loads(r)
         stopwords = json_data['stopwords']
@@ -180,7 +180,7 @@ def getSuggestedWords(search_tokens):
 
 def fetchResults(json):
     try:
-        RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
+        RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'/ranking'
         r = requests.post(RANKING_URL, data=json)
         json_data = json.loads(r)
         #print(json_data)

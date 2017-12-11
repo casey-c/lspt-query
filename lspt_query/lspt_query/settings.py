@@ -123,9 +123,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-INDEXING_TEAM_NAME = 'teamy'
+INDEXING_TEAM_NAME = 'teamy.cs.rpi.edu'
 #INDEXING_TEAM_NAME = 'teamq'
 #INDEXING_TEAM_NAME = 'teamrhino'
 
 #RANKING_TEAM_NAME = 'teamx'
-RANKING_TEAM_NAME = 'teamthorn'
+RANKING_TEAM_NAME = 'teamthorn.cs.rpi.edu:5000'
