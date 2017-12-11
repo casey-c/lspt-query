@@ -77,7 +77,7 @@ def display_results(request, id=None):
                 'transformed_trigrams': transformed_trigrams
             }
         })
-        print(my_json)
+        #print(my_json)
         search_results = fetchResults(my_json)
 
         context = {
@@ -188,7 +188,7 @@ def fetchResults(json):
     RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
     r = requests.post(RANKING_URL, data=json)
     json_data = json.loads(r)
-    print(json_data)
+    #print(json_data)
     ranking = json_data['ranking']
     sorted_ranking = sorted(ranking, key=lambda k: k['rank'])
     search_results = []
@@ -222,6 +222,6 @@ def convertToTrigrams(words):
     bigrams = []
     if(len(words)>2):
         for i in range(0,len(words)-2):
-            print(words[i] + ' ' + words[i+1] + ' ' + words[i+2])
+            #print(words[i] + ' ' + words[i+1] + ' ' + words[i+2])
             bigrams.append(" ".join([words[i], words[i+1], words[i+2]]))
     return bigrams

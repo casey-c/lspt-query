@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
+from django.conf import settings
 import urllib.parse, json, requests
 from search_results.models import Search
 
@@ -15,11 +16,10 @@ def redirect_to_page(request, search_id=None, link=None):
         'clickthrough': link
     })
 
-    RANKING_TEAM_NAME = 'teamthorn'
-    RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/stats'
-    print("Ranking URL used: " + RANKING_URL)
+    RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'.cs.rpi.edu/stats'
+    #print("Ranking URL used: " + RANKING_URL)
     #print(my_json)
-    print("Redirecting to: " + link)
+    #print("Redirecting to: " + link)
     #requests.post(RANKING_URL, data=my_json)
     
     if(link.startswith('http://')):
