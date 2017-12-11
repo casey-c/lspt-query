@@ -181,9 +181,14 @@ def getSuggestedWords(search_tokens):
 def fetchResults(json):
     try:
         RANKING_URL = 'http://'+settings.RANKING_TEAM_NAME+'/ranking'
-        r = requests.post(RANKING_URL, data=json)
-        json_data = json.loads(r)
-        #print(json_data)
+        r = requests.post(RANKING_URL, json=json)
+        print(r.content)
+
+        #print(json.loads(r.content))
+        #print("De-json'd")
+        json_data = json.loads(r.content)
+
+        print(json_data)
         ranking = json_data['ranking']
         sorted_ranking = sorted(ranking, key=lambda k: k['rank'])
         search_results = []
@@ -191,7 +196,7 @@ def fetchResults(json):
             search_results.append({'result': ranking['rank'], 'link': ranking['url']})
         return search_results
     except:
-        #print("Unable to fetch results from " + str(settings.RANKING_TEAM_NAME))
+        print("Unable to fetch results from " + str(settings.RANKING_TEAM_NAME))
         search_results = [
             {'result': 'result1', 'link': 'www.google.com'}, 
             {'result': 'result2', 'link': 'www.yahoo.com'}, 
