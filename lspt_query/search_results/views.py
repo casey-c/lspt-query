@@ -92,7 +92,6 @@ def display_results(request, id=None):
         }
         return render(request, 'search_results/search_results.html', context)
     else:
-        print("No search term")
         return redirect('landing:index')
 
 def suggested_search(search_term):
@@ -182,9 +181,9 @@ def getSuggestedWords(search_tokens):
     return suggestion
 
 def fetchResults(json):
-    '''
+    #'''
     #TODO: FILL IN RANKING TEAMS NAME
-    RANKING_TEAM_NAME = ''
+    RANKING_TEAM_NAME = 'teamthorn'
     RANKING_URL = 'http://'+RANKING_TEAM_NAME+'.cs.rpi.edu/ranking'
     r = request.get(RANKING_URL, data=json)
     json_data = json.loads(r)
@@ -195,8 +194,9 @@ def fetchResults(json):
     for ranking in sorted_ranking:
         search_results.append({'result': ranking['rank'], 'link': ranking['url']})
     return search_results
-    '''
+    #'''
 
+    '''
     search_results = [
         {'result': 'result1', 'link': 'www.google.com'}, 
         {'result': 'result2', 'link': 'www.yahoo.com'}, 
@@ -208,6 +208,7 @@ def fetchResults(json):
         {'result': 'result8', 'link': '127.0.0.1:8000'}, 
     ]
     return search_results
+    '''
 
 def convertToBigrams(words):
     bigrams = []
