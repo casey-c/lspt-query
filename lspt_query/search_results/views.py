@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 import json, cgi, enchant, urllib.parse, requests
 from nltk.metrics.distance import edit_distance, jaccard_distance
+from bs4 import BeautifulSoup
 from .models import Search
 d = enchant.Dict("en_US")
 # pip3 install pyenchanter
@@ -80,6 +81,23 @@ def display_results(request, id=None):
         })
         #print(my_json)
         search_results = fetchResults(my_json)
+        for result in search_results:
+            try:
+                url = result['link']
+                if(not url.startswith('http://')): 
+                    url = 'http://' + url
+                page = requests.get(url)
+                soup = BeautifulSoup(page.text, 'html.parser')
+                if(soup.title.string):
+                    print(soup.title.string)
+                    title = str(soup.title.string)
+                else:
+                    title = url
+                if(len(title) > 50):
+                    title = title[:50]+'...'
+                result['result'] = title
+            except:
+                result['result'] = result['link']
 
         context = {
             'search_id': search.id,
@@ -201,11 +219,11 @@ def fetchResults(json):
             {'result': 'result1', 'link': 'www.google.com'}, 
             {'result': 'result2', 'link': 'www.yahoo.com'}, 
             {'result': 'result3', 'link': 'www.example.com'}, 
-            {'result': 'result4', 'link': 'teambb.cs.rpi.edu:8000'},
+            {'result': 'result4', 'link': 'www.nintendo.com'},
             {'result': 'result5', 'link': 'www.rpi.edu'}, 
             {'result': 'result6', 'link': 'www.cs.rpi.edu'}, 
-            {'result': 'result7', 'link': 'teambb.cs.rpi.edu:8000'}, 
-            {'result': 'result8', 'link': 'teambb.cs.rpi.edu:8000'}, 
+            {'result': 'result7', 'link': 'www.cs.rpi.edu/~goldsd'}, 
+            {'result': 'result8', 'link': 'www.youtube.com'}, 
         ]
         return search_results
 
