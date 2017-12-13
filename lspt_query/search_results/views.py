@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
-import json, cgi, enchant, urllib.parse, requests
+import json, cgi, enchant, urllib.parse, requests, re
 from nltk.metrics.distance import edit_distance, jaccard_distance
 from bs4 import BeautifulSoup
 from bs4.element import Comment
@@ -22,6 +22,9 @@ def display_results(request, id=None):
     #  in which case we redirect to the homepage
     if(id == None):
         search_term = request.POST.get('input_field')
+        search_term = search_term.strip()
+        search_tokens = search_term.split()
+        search_term = ' '.join(search_tokens)
         if((search_term == None) or search_term == ''):
             return redirect('landing:index')
         search_term = urllib.parse.quote_plus(search_term)
@@ -29,15 +32,36 @@ def display_results(request, id=None):
         return redirect(my_url)
     else:
         search_term = urllib.parse.unquote_plus(id)
-    search_tokens = search_term.split(' ')
+    print("Search term: " + search_term)
+    search_tokens = search_term.strip(' \t!@#$%^&*()_+-=[]{}\\|,./<>?\'"`~')
+    search_tokens = search_term.split(' \t!@#$%^&*()_+-=[]{}\\|,./<>?\'"`~')
 
-    suggestion = getSuggestedWords(search_tokens)
+    print("Search tokens: " + str(search_tokens))
+    regex = re.compile('\w+')
+    invalid = True
+    for token in search_tokens:
+        if regex.match(token):
+            print('Found match!')
+            invalid = False
+            break
+    if invalid:
+        search_term = None
+        search_tokens = None
+    
+    #search_tokens = search_term.split(' ')
+    print(search_tokens)
+
+    suggestion = None
+    suggested_search = None
+    if(search_tokens):
+        suggestion = getSuggestedWords(search_tokens)
 
     # now that we've corrected terms, join with spaces between
     #   to create a correctly delineated string. if there were
     #   no alternatives suggested, we set the suggested model
     #   to be none
-    suggested_search = " ".join(suggestion)
+    if(suggestion):
+        suggested_search = " ".join(suggestion)
     if(suggested_search != search_term):
         suggested_search_model = Search(search_term=suggested_search)
     else:
