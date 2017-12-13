@@ -16,7 +16,7 @@ div.empty-background {
 }
 
 .search-results {
-
+    padding: 20px;
     background: linear-gradient(rgb(139,214,252), white);
 
 }
