@@ -11,19 +11,16 @@
         <div class='col-sm-4 search-bar'>
             {% block search-bar %}
                 <div class='container'>
-                    {{ block.super }}
+                    <form action="/search/" method="post">
+                        {% csrf_token %}
+                        <label for="search_bar"></label>
+                        <input class='form-control' id="search_bar" type="text" name="input_field" placeholder="What would you like to find?" value="{{ search_term }}">
+                        <input type="submit" value="Search">
+                    </form>
                 </div>
             {% endblock %}
         </div>
         <div class='col-sm-7 search-results' style="overflow:auto; max-height: 100vh;">
-            <div class='container'>
-                <div class"search-id">Your search id: {{ search_id }}</div>
-                <div class="search-term">Your search term: {{ search_term }}</div>
-                <div class="search-tokens">The tokens of the search term: {{ search_tokens }}</div>
-                {% if suggested_search %}
-                    <div class="suggested-tokens">Our suggested tokens: {{ suggestion }}</div>
-                {% endif %}
-            </div>
             {% if search_results %}
                 <div class='container'>
                     {% if suggested_search %}
