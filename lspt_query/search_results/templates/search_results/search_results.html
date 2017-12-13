@@ -30,6 +30,11 @@
                         {% for result in search_results %}
                             <div class="container search-result card">
                                 <a href='/clickthrough/{{ search_id }}/{{ result.link }}'>{{ result.result }}</a>
+                                {% if result.preview %}
+                                <div class='result-preview'>
+                                    {{ result.preview }}
+                                </div>
+                                {% endif %}
                             </div><p/>
                         {% endfor %}
                     </div>

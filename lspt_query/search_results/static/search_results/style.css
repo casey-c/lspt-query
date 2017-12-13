@@ -24,3 +24,7 @@ div.empty-background {
 .left-align-search {
     float: left;
 }
+
+.result-preview {
+    font-size: 0.7em;
+}

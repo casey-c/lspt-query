@@ -4,6 +4,7 @@ from django.conf import settings
 import json, cgi, enchant, urllib.parse, requests
 from nltk.metrics.distance import edit_distance, jaccard_distance
 from bs4 import BeautifulSoup
+from bs4.element import Comment
 from .models import Search
 d = enchant.Dict("en_US")
 # pip3 install pyenchanter
@@ -89,13 +90,17 @@ def display_results(request, id=None):
                 page = requests.get(url)
                 soup = BeautifulSoup(page.text, 'html.parser')
                 if(soup.title.string):
-                    print(soup.title.string)
+                    #print(soup.title.string)
                     title = str(soup.title.string)
                 else:
                     title = url
                 if(len(title) > 50):
                     title = title[:50]+'...'
                 result['result'] = title
+                try:
+                    result['preview'] = text_from_html(soup)
+                except:
+                    result['preview'] = None
             except:
                 result['result'] = result['link']
 
@@ -241,3 +246,19 @@ def convertToTrigrams(words):
             #print(words[i] + ' ' + words[i+1] + ' ' + words[i+2])
             bigrams.append(" ".join([words[i], words[i+1], words[i+2]]))
     return bigrams
+
+def tag_visible(element):
+    if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+        return False
+    if isinstance(element, Comment):
+        return False
+    return True
+
+def text_from_html(soup):
+    texts = soup.findAll(text=True)
+    visible_texts = filter(tag_visible, texts)
+    preview = ' '.join(t.strip() for t in visible_texts)
+    preview = ' '.join(preview.split())
+    if preview:
+        preview = preview + '...'
+    return preview[:150]
