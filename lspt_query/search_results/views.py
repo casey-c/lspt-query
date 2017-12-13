@@ -22,9 +22,10 @@ def display_results(request, id=None):
     #  in which case we redirect to the homepage
     if(id == None):
         search_term = request.POST.get('input_field')
-        search_term = search_term.strip()
-        search_tokens = search_term.split()
-        search_term = ' '.join(search_tokens)
+        if(search_term != None):
+            search_term = search_term.strip()
+            search_tokens = search_term.split()
+            search_term = ' '.join(search_tokens)
         if((search_term == None) or search_term == ''):
             return redirect('landing:index')
         search_term = urllib.parse.quote_plus(search_term)
