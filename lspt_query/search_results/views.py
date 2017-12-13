@@ -259,6 +259,6 @@ def text_from_html(soup):
     visible_texts = filter(tag_visible, texts)
     preview = ' '.join(t.strip() for t in visible_texts)
     preview = ' '.join(preview.split())
-    if preview:
-        preview = preview + '...'
-    return preview[:150]
+    if preview :
+        preview = preview[:150] + '...'
+    return preview
