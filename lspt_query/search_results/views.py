@@ -32,16 +32,13 @@ def display_results(request, id=None):
         return redirect(my_url)
     else:
         search_term = urllib.parse.unquote_plus(id)
-    print("Search term: " + search_term)
     search_tokens = search_term.strip(' \t!@#$%^&*()_+-=[]{}\\|,./<>?\'"`~')
     search_tokens = search_term.split(' \t!@#$%^&*()_+-=[]{}\\|,./<>?\'"`~')
 
-    print("Search tokens: " + str(search_tokens))
     regex = re.compile('\w+')
     invalid = True
     for token in search_tokens:
         if regex.match(token):
-            print('Found match!')
             invalid = False
             break
     if invalid:
@@ -49,7 +46,6 @@ def display_results(request, id=None):
         search_tokens = None
     
     #search_tokens = search_term.split(' ')
-    print(search_tokens)
 
     suggestion = None
     suggested_search = None
@@ -118,8 +114,6 @@ def display_results(request, id=None):
                     title = str(soup.title.string)
                 else:
                     title = url
-                if(len(title) > 50):
-                    title = title[:50]+'...'
                 result['result'] = title
                 try:
                     result['preview'] = text_from_html(soup)
